@@ -2131,6 +2131,8 @@ export class SapNotesApiClient {
     const shouldUseHeadless = forceHeadless || !this.config.headful;
 
     this.browser = await chromium.launch({
+      // BROWSER_CHANNEL (e.g. msedge, chrome) uses an installed browser, independent of the Playwright version
+      ...(process.env.BROWSER_CHANNEL ? { channel: process.env.BROWSER_CHANNEL } : {}),
       headless: shouldUseHeadless,
       args: [
         '--disable-dev-shm-usage',

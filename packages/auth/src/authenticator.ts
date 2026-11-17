@@ -179,7 +179,9 @@ export class SapWebAuthenticator {
 
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        return await launcher.launch({ headless });
+        // BROWSER_CHANNEL (e.g. msedge, chrome) uses an installed browser, independent of the Playwright version
+        const channel = process.env.BROWSER_CHANNEL;
+        return await launcher.launch({ headless, ...(channel ? { channel } : {}) });
       } catch (error) {
         lastError = error as Error;
         const message = lastError.message;
